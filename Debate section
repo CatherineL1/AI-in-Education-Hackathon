@@ -1,0 +1,41 @@
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card } from '@/components/ui/card';
+import { Loader2, Users, Sparkles, RotateCcw, FileText } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { base44 } from '@/api/base44Client';
+
+
+export default function DebateSection({ characters }) {
+ const [debateTopic, setDebateTopic] = useState('');
+ const [debateMessages, setDebateMessages] = useState([]);
+ const [isDebating, setIsDebating] = useState(false);
+ const [showSummary, setShowSummary] = useState(false);
+
+
+ const simulateDebate = async (topic, characters, userPrompt) => {
+   const debateMessages = [];
+  
+   // Round 1: Initial responses
+   for (let i = 0; i < characters.length; i++) {
+     const char = characters[i];
+     const prompt = `You are ${char.name}, ${char.role} who lived ${char.lifespan} during ${char.period} in ${char.region}.
+
+
+BIOGRAPHY: ${char.bio}
+
+
+PERSONALITY: ${char.personality || 'Historically accurate personality.'}
+
+
+SPEAKING STYLE: ${char.speaking_style || 'Authentic to historical period.'}
+
+
+You are participating in a historical debate on the topic: "${userPrompt}"
+
+
+${i > 0 ? `Previous speakers in this debate:\n${debateMessages.map(m => `${m.character.name}: ${m.message}`).join('\n\n')}\n\n` : ''}
+
+
+Provide your perspective on this topic as ${char.name}, staying completely in character. Reference your historical experiences, beliefs, and context. Keep your response to 2-3 thoughtful sentences.
