@@ -1,0 +1,36 @@
+import React from 'react';
+import CharacterCard from './CharacterCard';
+import { motion } from 'framer-motion';
+
+
+export default function CharacterGrid({ characters, onTalkToCharacter }) {
+ if (!characters || characters.length === 0) {
+   return null;
+ }
+
+
+ return (
+   <div className="mt-12">
+     <div className="text-center mb-8">
+       <h2 className="text-3xl font-bold text-gray-900 mb-2">Your Historical Companions</h2>
+       <p className="text-gray-600">Select a figure to begin your conversation</p>
+     </div>
+    
+     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+       {characters.map((character, index) => (
+         <motion.div
+           key={character.id}
+           initial={{ opacity: 0, y: 20 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.4, delay: index * 0.1 }}
+         >
+           <CharacterCard
+             character={character}
+             onTalkToCharacter={onTalkToCharacter}
+           />
+         </motion.div>
+       ))}
+     </div>
+   </div>
+ );
+}
