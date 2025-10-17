@@ -1,0 +1,35 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { X, Send, Loader2 } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+
+
+export default function ChatModal({ character, onClose }) {
+ const [messages, setMessages] = useState([
+   {
+     sender: 'character',
+     text: `Greetings! I am ${character.name}, ${character.role} from ${character.period}. ${character.bio} What would you like to discuss?`
+   }
+ ]);
+ const [input, setInput] = useState('');
+ const [isThinking, setIsThinking] = useState(false);
+ const messagesEndRef = useRef(null);
+  const avatarUrl = `https://api.dicebear.com/7.x/bottts/svg?seed=${character.id}&backgroundColor=b6e3f4,c0aede,d1d4f9&scale=85`;
+
+
+ const scrollToBottom = () => {
+   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+ };
+
+
+ useEffect(() => {
+   scrollToBottom();
+ }, [messages]);
+
+
+ const chatWithCharacter = async (userMessage) => {
+   const conversationHistory = messages
+     .slice(-10)
+     .map(m => `${m.sender === 'user' ? 'User' : character.name}: ${m.text}`)
+     .join('\n');
