@@ -1,0 +1,78 @@
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Sparkles } from 'lucide-react';
+
+
+const timePeriods = [
+ "Ancient Egypt (3000–30 BCE)",
+ "Classical Greece (800–146 BCE)",
+ "Roman Empire (27 BCE–476 CE)",
+ "Islamic Golden Age (8th–13th centuries)",
+ "European Middle Ages (500–1500)",
+ "Renaissance (14th–17th centuries)",
+ "Age of Exploration (15th–17th centuries)",
+ "Scientific Revolution (1543–1687)",
+ "Enlightenment (17th–18th centuries)",
+ "Industrial Revolution (1760–1840)",
+ "American Revolution (1765–1783)",
+ "French Revolution (1789–1799)",
+ "Meiji Restoration (1868–1912)",
+ "World War I (1914–1918)",
+ "Interwar Period (1918–1939)",
+ "World War II (1939–1945)",
+ "Cold War (1947–1991)",
+ "Civil Rights Era (1950s–1970s)",
+ "Information Age (1990–present)"
+];
+
+
+export default function TopicSelector({ selectedPeriod, onPeriodChange, onGenerate, isGenerating }) {
+ return (
+   <div className="max-w-2xl mx-auto">
+     <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-amber-100 p-8">
+       <div className="space-y-6">
+         <div className="space-y-2">
+           <label className="text-sm font-semibold text-gray-700 uppercase tracking-wider">
+             Choose Historical Period
+           </label>
+           <Select value={selectedPeriod} onValueChange={onPeriodChange}>
+             <SelectTrigger className="w-full h-14 text-lg border-2 border-amber-200 focus:border-amber-400 transition-colors">
+               <SelectValue placeholder="Select a time period..." />
+             </SelectTrigger>
+             <SelectContent className="max-h-80">
+               {timePeriods.map((period) => (
+                 <SelectItem
+                   key={period}
+                   value={period}
+                   className="text-base py-3 cursor-pointer hover:bg-amber-50"
+                 >
+                   {period}
+                 </SelectItem>
+               ))}
+             </SelectContent>
+           </Select>
+         </div>
+        
+         <Button
+           onClick={onGenerate}
+           disabled={!selectedPeriod || isGenerating}
+           className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+         >
+           {isGenerating ? (
+             <>
+               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3" />
+               Summoning Historical Figures...
+             </>
+           ) : (
+             <>
+               <Sparkles className="w-5 h-5 mr-3" />
+               Generate Characters
+             </>
+           )}
+         </Button>
+       </div>
+     </div>
+   </div>
+ );
+}
